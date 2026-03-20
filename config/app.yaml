@@ -1,1 +1,30 @@
-app_name: my_app
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: qa_user_java
+      POSTGRES_PASSWORD: supersecret2
+      POSTGRES_DB: db
+  service:
+    baseUrl: "https://apps.qualiadept.eu/hapifyme"
+
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U qa_user"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
