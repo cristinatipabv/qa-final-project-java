@@ -1,0 +1,19 @@
+Set-Content -Path "ApiTest.txt" -Value @"
+Test API - GET /todos/1
+
+START
+
+URL = https://jsonplaceholder.typicode.com/todos/1
+
+RESPONSE = GET request to URL
+
+IF RESPONSE.status_code == 200 THEN
+    IF RESPONSE contains 'title' THEN
+        PRINT "TEST PASS"
+    ELSE
+        PRINT "TEST FAIL - lipsește title"
+ELSE
+    PRINT "TEST FAIL - status code != 200"
+
+STOP
+"@
